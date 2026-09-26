@@ -74,7 +74,19 @@ nav .nav-contact { font-weight: 700; }
   align-items: center;
 }
 
-.hero-copy { padding: 0 0 43px; animation: boot-in 760ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hero-copy { position: relative; z-index: 1; isolation: isolate; padding: 0 0 43px; animation: boot-in 760ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hero-threat-map { position: absolute; z-index: -1; top: -62px; left: -13%; width: 128%; height: 420px; overflow: hidden; pointer-events: none; }
+.threat-map-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.2; filter: invert(74%) sepia(52%) saturate(490%) hue-rotate(53deg) brightness(95%) contrast(90%); mix-blend-mode: screen; }
+.threat-map-label { position: absolute; top: 8%; right: 4%; padding: 4px 7px; border: 1px solid rgba(181, 255, 112, 0.25); color: rgba(181, 255, 112, 0.7); font: 8px/1.4 var(--mono); letter-spacing: 0.06em; }
+.threat-route { position: absolute; width: 53%; height: 32%; border-top: 1px solid rgba(255, 182, 92, 0.75); border-radius: 50%; mask-image: linear-gradient(90deg, transparent, #000 14%, #000 84%, transparent); animation: route-shimmer 3.4s ease-in-out infinite; }
+.threat-route::after { position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 12px rgba(255, 182, 92, 0.8); content: ""; animation: packet-travel 3.4s ease-in-out infinite; }
+.threat-route-one { top: 34%; left: 11%; transform: rotate(-17deg); }
+.threat-route-two { top: 51%; left: 38%; width: 47%; border-color: rgba(181, 255, 112, 0.65); animation-delay: -1.7s; }
+.threat-route-two::after { background: var(--lime); box-shadow: 0 0 12px rgba(181, 255, 112, 0.8); animation-delay: -1.7s; }
+.threat-node { position: absolute; width: 7px; height: 7px; border: 1px solid var(--paper); border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 4px rgba(181, 255, 112, 0.12), 0 0 14px rgba(181, 255, 112, 0.6); animation: threat-pulse 2s ease-out infinite; }
+.threat-node-one { top: 31%; left: 19%; }
+.threat-node-two { top: 45%; left: 59%; animation-delay: 0.7s; }
+.threat-node-three { top: 24%; left: 76%; background: var(--coral); box-shadow: 0 0 0 4px rgba(255, 182, 92, 0.12), 0 0 14px rgba(255, 182, 92, 0.6); animation-delay: 1.2s; }
 .eyebrow, .project-type, .hero-footnote, .footer-year {
   font: 10px/1.5 var(--mono);
   letter-spacing: 0.07em;
@@ -162,6 +174,9 @@ h2 { margin: 15px 0 0; font-size: 52px; font-weight: 600; line-height: 1.08; let
 @keyframes galaxy-middle { from { transform: translate(-50%, -50%) rotateX(58deg) rotateZ(35deg); } to { transform: translate(-50%, -50%) rotateX(58deg) rotateZ(395deg); } }
 @keyframes galaxy-inner { from { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(115deg); } to { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(475deg); } }
 @keyframes galaxy-core-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@keyframes route-shimmer { 0%, 100% { opacity: 0.28; } 50% { opacity: 0.9; } }
+@keyframes packet-travel { 0% { left: 0; opacity: 0; } 12%, 82% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
+@keyframes threat-pulse { 0%, 100% { box-shadow: 0 0 0 2px rgba(181, 255, 112, 0.08), 0 0 8px rgba(181, 255, 112, 0.35); } 50% { box-shadow: 0 0 0 8px rgba(181, 255, 112, 0.02), 0 0 18px rgba(181, 255, 112, 0.8); } }
 
 @keyframes status-pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(181, 255, 112, 0.65); }
@@ -187,6 +202,8 @@ h2 { margin: 15px 0 0; font-size: 52px; font-weight: 600; line-height: 1.08; let
   nav { gap: 19px; font-size: 12px; }
   .hero { min-height: auto; padding: 65px 6% 72px; grid-template-columns: 1fr; gap: 38px; }
   .hero-copy { padding: 0; }
+  .hero-threat-map { top: -38px; left: -12%; width: 124%; height: 300px; opacity: 0.76; }
+  .threat-map-label { top: 4%; font-size: 7px; }
   .eyebrow { font-size: 9px; }
   h1 { margin: 25px 0 22px; font-size: 34px; }
   .hero-bottom { grid-template-columns: 1fr; gap: 22px; }
