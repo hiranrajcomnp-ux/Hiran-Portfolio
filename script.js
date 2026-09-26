@@ -1,26 +1,28 @@
-const nav = document.querySelector('.nav');
-const menu = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav nav');
-const glow = document.querySelector('.cursor-glow');
+const cursorGlow = document.querySelector(".cursor-glow");
+const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-menu.addEventListener('click', () => navLinks.classList.toggle('open'));
-document.querySelectorAll('.nav nav a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+if (cursorGlow && hasFinePointer && !prefersReducedMotion) {
+  let pointerX = 0;
+  let pointerY = 0;
+  let pendingFrame = 0;
 
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
+  window.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse") return;
 
-window.addEventListener('pointermove', e => {
-  glow.style.left = `${e.clientX}px`;
-  glow.style.top = `${e.clientY}px`;
-});
+    pointerX = event.clientX;
+    pointerY = event.clientY;
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('show');
-      observer.unobserve(entry.target);
-    }
+    if (pendingFrame) return;
+    pendingFrame = window.requestAnimationFrame(() => {
+      cursorGlow.style.setProperty("--cursor-x", `${pointerX}px`);
+      cursorGlow.style.setProperty("--cursor-y", `${pointerY}px`);
+      cursorGlow.classList.add("is-visible");
+      pendingFrame = 0;
+    });
+  }, { passive: true });
+
+  window.addEventListener("pointerleave", () => {
+    cursorGlow.classList.remove("is-visible");
   });
-}, {threshold: .12});
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-document.getElementById('year').textContent = new Date().getFullYear();
+}
